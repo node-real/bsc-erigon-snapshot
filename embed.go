@@ -31,6 +31,9 @@ var Chiado []byte
 //go:embed bsc.toml
 var Bsc []byte
 
+//go:embed chapel.toml
+var Chapel []byte
+
 //go:embed history/mainnet.toml
 var MainnetHistory []byte
 
@@ -57,3 +60,6 @@ var ChiadoHistory []byte
 
 //go:embed history/bsc.toml
 var BscHistory []byte
+
+//go:embed history/chapel.toml
+var ChapelHistory []byte
