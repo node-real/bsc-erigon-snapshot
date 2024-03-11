@@ -10,14 +10,14 @@ var Mainnet []byte
 //go:embed goerli.toml
 var Goerli []byte
 
-//go:embed ropsten.toml
-var Ropsten []byte
-
 //go:embed sepolia.toml
 var Sepolia []byte
 
 //go:embed mumbai.toml
 var Mumbai []byte
+
+//go:embed amoy.toml
+var Amoy []byte
 
 //go:embed bor-mainnet.toml
 var BorMainnet []byte
