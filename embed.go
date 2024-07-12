@@ -33,9 +33,3 @@ var Bsc []byte
 
 //go:embed chapel.toml
 var Chapel []byte
-
-//go:embed history/bsc.toml
-var BscHistory []byte
-
-//go:embed history/chapel.toml
-var ChapelHistory []byte

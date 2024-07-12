@@ -27,3 +27,9 @@ var Gnosis []byte
 
 //go:embed chiado.toml
 var Chiado []byte
+
+//go:embed bsc.toml
+var Bsc []byte
+
+//go:embed chapel.toml
+var Chapel []byte
