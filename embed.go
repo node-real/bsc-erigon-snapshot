@@ -47,9 +47,8 @@ var Bsc []byte
 //go:embed chapel.toml
 var Chapel []byte
 
-
 func getURLByChain(chain string) string {
-	return fmt.Sprintf("https://raw.githubusercontent.com/erigontech/erigon-snapshot/%s/%s.toml", branchReference, chain)
+	return fmt.Sprintf("https://raw.githubusercontent.com/node-real/bsc-erigon-snapshot/%s/%s.toml", branchReference, chain)
 }
 
 func LoadSnapshots() (couldFetch bool) {
@@ -61,6 +60,8 @@ func LoadSnapshots() (couldFetch bool) {
 		gnosisUrl     = getURLByChain("gnosis")
 		chiadoUrl     = getURLByChain("chiado")
 		holeskyUrl    = getURLByChain("holesky")
+		bscUrl        = getURLByChain("bsc")
+		chapelUrl     = getURLByChain("chapel")
 	)
 	var hashes []byte
 	var err error
@@ -106,6 +107,18 @@ func LoadSnapshots() (couldFetch bool) {
 		return
 	}
 	Holesky = hashes
+
+	if hashes, err = fetchSnapshotHashes(bscUrl); err != nil {
+		couldFetch = false
+		return
+	}
+	Bsc = hashes
+
+	if hashes, err = fetchSnapshotHashes(chapelUrl); err != nil {
+		couldFetch = false
+		return
+	}
+	Chapel = hashes
 
 	couldFetch = true
 	return
