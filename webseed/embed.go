@@ -7,14 +7,8 @@ import (
 //go:embed mainnet.toml
 var Mainnet []byte
 
-//go:embed goerli.toml
-var Goerli []byte
-
 //go:embed sepolia.toml
 var Sepolia []byte
-
-//go:embed mumbai.toml
-var Mumbai []byte
 
 //go:embed amoy.toml
 var Amoy []byte
@@ -27,6 +21,9 @@ var Gnosis []byte
 
 //go:embed chiado.toml
 var Chiado []byte
+
+//go:embed holesky.toml
+var Holesky []byte
 
 //go:embed bsc.toml
 var Bsc []byte
