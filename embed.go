@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	_ "github.com/erigontech/erigon-snapshot/webseed"
+	_ "github.com/ledgerwatch/erigon-snapshot/webseed"
 )
 
 var branchReference = getBranchReference()
