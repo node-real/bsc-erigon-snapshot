@@ -19,16 +19,8 @@ jobs:
           go-version: '1.23'
       - run: go install github.com/pelletier/go-toml/v2/cmd/tomll@latest
 
-      - run: tomll amoy.toml
-      - run: tomll bor-mainnet.toml
-      - run: tomll chiado.toml
-      - run: tomll gnosis.toml
-      - run: tomll mainnet.toml
-      - run: tomll sepolia.toml
+      - run: tomll bsc.toml
+      - run: tomll chapel.toml
 
-      - run: tomll webseed/amoy.toml
-      - run: tomll webseed/bor-mainnet.toml
-      - run: tomll webseed/chiado.toml
-      - run: tomll webseed/gnosis.toml
-      - run: tomll webseed/mainnet.toml
-      - run: tomll webseed/sepolia.toml
+      - run: tomll webseed/bsc.toml
+      - run: tomll webseed/chapel.toml
