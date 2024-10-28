@@ -108,6 +108,18 @@ func LoadSnapshots(ctx context.Context) (fetched bool, err error) {
 	}
 	Holesky = hashes
 
+	if hashes, err = fetchSnapshotHashes(ctx, bscUrl); err != nil {
+		fetched = false
+		return
+	}
+	Bsc = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, chapelUrl); err != nil {
+		fetched = false
+		return
+	}
+	Chapel = hashes
+
 	fetched = true
 	return fetched, nil
 }
