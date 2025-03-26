@@ -6,20 +6,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 
 	_ "github.com/erigontech/erigon-snapshot/webseed"
 )
-
-var branchReference = getBranchReference()
-
-func getBranchReference() string {
-	v, _ := os.LookupEnv("SNAPS_GIT_BRANCH")
-	if v != "" {
-		return v
-	}
-	return "main"
-}
 
 //go:embed mainnet.toml
 var Mainnet []byte
@@ -48,21 +37,21 @@ var Bsc []byte
 //go:embed chapel.toml
 var Chapel []byte
 
-func getURLByChain(chain string) string {
-	return fmt.Sprintf("https://raw.githubusercontent.com/node-real/bsc-erigon-snapshot/%s/%s.toml", branchReference, chain)
+func getURLByChain(chain, branch string) string {
+	return fmt.Sprintf("https://raw.githubusercontent.com/node-real/bsc-erigon-snapshot/%s/%s.toml", branch, chain)
 }
 
-func LoadSnapshots(ctx context.Context) (fetched bool, err error) {
+func LoadSnapshots(ctx context.Context, branch string) (fetched bool, err error) {
 	var (
-		mainnetUrl    = getURLByChain("mainnet")
-		sepoliaUrl    = getURLByChain("sepolia")
-		amoyUrl       = getURLByChain("amoy")
-		borMainnetUrl = getURLByChain("bor-mainnet")
-		gnosisUrl     = getURLByChain("gnosis")
-		chiadoUrl     = getURLByChain("chiado")
-		holeskyUrl    = getURLByChain("holesky")
-		bscUrl        = getURLByChain("bsc")
-		chapelUrl     = getURLByChain("chapel")
+		bscUrl        = getURLByChain("bsc", branch)
+		chapelUrl     = getURLByChain("chapel", branch)
+		mainnetUrl    = getURLByChain("mainnet", branch)
+		sepoliaUrl    = getURLByChain("sepolia", branch)
+		amoyUrl       = getURLByChain("amoy", branch)
+		borMainnetUrl = getURLByChain("bor-mainnet", branch)
+		gnosisUrl     = getURLByChain("gnosis", branch)
+		chiadoUrl     = getURLByChain("chiado", branch)
+		holeskyUrl    = getURLByChain("holesky", branch)
 	)
 	var hashes []byte
 	// Try to fetch the latest snapshot hashes from the web
