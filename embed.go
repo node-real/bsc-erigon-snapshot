@@ -56,59 +56,11 @@ func getURLByChain(source SnapshotSource, chain, branch string) string {
 
 func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (fetched bool, err error) {
 	var (
-		mainnetUrl    = getURLByChain(source, "mainnet", branch)
-		sepoliaUrl    = getURLByChain(source, "sepolia", branch)
-		amoyUrl       = getURLByChain(source, "amoy", branch)
-		borMainnetUrl = getURLByChain(source, "bor-mainnet", branch)
-		gnosisUrl     = getURLByChain(source, "gnosis", branch)
-		chiadoUrl     = getURLByChain(source, "chiado", branch)
-		holeskyUrl    = getURLByChain(source, "holesky", branch)
-		bscUrl        = getURLByChain(source, "bsc", branch)
-		chapelUrl     = getURLByChain(source, "chapel", branch)
+		bscUrl    = getURLByChain(source, "bsc", branch)
+		chapelUrl = getURLByChain(source, "chapel", branch)
 	)
 	var hashes []byte
 	// Try to fetch the latest snapshot hashes from the web
-	if hashes, err = fetchSnapshotHashes(ctx, source, mainnetUrl); err != nil {
-		fetched = false
-		return
-	}
-	Mainnet = hashes
-
-	if hashes, err = fetchSnapshotHashes(ctx, source, sepoliaUrl); err != nil {
-		fetched = false
-		return
-	}
-	Sepolia = hashes
-
-	if hashes, err = fetchSnapshotHashes(ctx, source, amoyUrl); err != nil {
-		fetched = false
-		return
-	}
-	Amoy = hashes
-
-	if hashes, err = fetchSnapshotHashes(ctx, source, borMainnetUrl); err != nil {
-		fetched = false
-		return
-	}
-	BorMainnet = hashes
-
-	if hashes, err = fetchSnapshotHashes(ctx, source, gnosisUrl); err != nil {
-		fetched = false
-		return
-	}
-	Gnosis = hashes
-
-	if hashes, err = fetchSnapshotHashes(ctx, source, chiadoUrl); err != nil {
-		fetched = false
-		return
-	}
-	Chiado = hashes
-
-	if hashes, err = fetchSnapshotHashes(ctx, source, holeskyUrl); err != nil {
-		fetched = false
-		return
-	}
-	Holesky = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, bscUrl); err != nil {
 		fetched = false
@@ -121,7 +73,6 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (f
 		return
 	}
 	Chapel = hashes
-
 	fetched = true
 	return fetched, nil
 }
