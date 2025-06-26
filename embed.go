@@ -46,9 +46,15 @@ const (
 
 func getURLByChain(source SnapshotSource, chain, branch string) string {
 	if source == Github {
-		return fmt.Sprintf("https://raw.githubusercontent.com/node-real/bsc-erigon-snapshot/%s/%s.toml", branch, chain)
+		if chain == "bsc" || chain == "chapel" {
+			return fmt.Sprintf("https://raw.githubusercontent.com/node-real/bsc-erigon-snapshot/%s/%s.toml", branch, chain)
+		}
+		return fmt.Sprintf("https://raw.githubusercontent.com/erigontech/erigon-snapshot/%s/%s.toml", branch, chain)
 	} else if source == R2 {
-		return fmt.Sprintf("https://download.snapshots.bnbchain.world/%s/%s.toml", branch, chain)
+		if chain == "bsc" || chain == "chapel" {
+			return fmt.Sprintf("https://download.snapshots.bnbchain.world/%s/%s.toml", branch, chain)
+		}
+		return fmt.Sprintf("https://erigon-snapshots.erigon.network/%s/%s.toml", branch, chain)
 	}
 
 	panic(fmt.Sprintf("unknown snapshot source: %d", source))
@@ -56,8 +62,15 @@ func getURLByChain(source SnapshotSource, chain, branch string) string {
 
 func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (fetched bool, err error) {
 	var (
-		bscUrl    = getURLByChain(source, "bsc", branch)
-		chapelUrl = getURLByChain(source, "chapel", branch)
+		mainnetUrl    = getURLByChain(source, "mainnet", branch)
+		sepoliaUrl    = getURLByChain(source, "sepolia", branch)
+		amoyUrl       = getURLByChain(source, "amoy", branch)
+		borMainnetUrl = getURLByChain(source, "bor-mainnet", branch)
+		gnosisUrl     = getURLByChain(source, "gnosis", branch)
+		chiadoUrl     = getURLByChain(source, "chiado", branch)
+		holeskyUrl    = getURLByChain(source, "holesky", branch)
+		bscUrl        = getURLByChain(source, "bsc", branch)
+		chapelUrl     = getURLByChain(source, "chapel", branch)
 	)
 	var hashes []byte
 	// Try to fetch the latest snapshot hashes from the web
@@ -73,6 +86,48 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (f
 		return
 	}
 	Chapel = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, mainnetUrl); err != nil {
+		fetched = false
+		return
+	}
+	Mainnet = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, sepoliaUrl); err != nil {
+		fetched = false
+		return
+	}
+	Sepolia = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, amoyUrl); err != nil {
+		fetched = false
+		return
+	}
+	Amoy = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, borMainnetUrl); err != nil {
+		fetched = false
+		return
+	}
+	BorMainnet = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, gnosisUrl); err != nil {
+		fetched = false
+		return
+	}
+	Gnosis = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, chiadoUrl); err != nil {
+		fetched = false
+		return
+	}
+	Chiado = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, holeskyUrl); err != nil {
+		fetched = false
+		return
+	}
+	Holesky = hashes
 	fetched = true
 	return fetched, nil
 }
