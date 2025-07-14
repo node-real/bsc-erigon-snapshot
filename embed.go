@@ -31,6 +31,9 @@ var Chiado []byte
 //go:embed holesky.toml
 var Holesky []byte
 
+//go:embed hoodi.toml
+var Hoodi []byte
+
 //go:embed bsc.toml
 var Bsc []byte
 
@@ -69,6 +72,7 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (f
 		gnosisUrl     = getURLByChain(source, "gnosis", branch)
 		chiadoUrl     = getURLByChain(source, "chiado", branch)
 		holeskyUrl    = getURLByChain(source, "holesky", branch)
+		hoodiUrl      = getURLByChain(source, "hoodi", branch)
 		bscUrl        = getURLByChain(source, "bsc", branch)
 		chapelUrl     = getURLByChain(source, "chapel", branch)
 	)
@@ -128,6 +132,13 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (f
 		return
 	}
 	Holesky = hashes
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, hoodiUrl); err != nil {
+		fetched = false
+		return
+	}
+	Hoodi = hashes
+
 	fetched = true
 	return fetched, nil
 }
