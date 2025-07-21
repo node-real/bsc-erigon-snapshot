@@ -86,13 +86,11 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (e
 	// Try to fetch the latest snapshot hashes from the web
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, bscUrl); err != nil {
-		fetched = false
 		return
 	}
 	Bsc = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, chapelUrl); err != nil {
-		fetched = false
 		return
 	}
 	Chapel = hashes
