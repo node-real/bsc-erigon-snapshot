@@ -31,6 +31,9 @@ var Chiado []byte
 //go:embed holesky.toml
 var Holesky []byte
 
+//go:embed hoodi.toml
+var Hoodi []byte
+
 //go:embed bsc.toml
 var Bsc []byte
 
@@ -60,7 +63,13 @@ func getURLByChain(source SnapshotSource, chain, branch string) string {
 	panic(fmt.Sprintf("unknown snapshot source: %d", source))
 }
 
-func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (fetched bool, err error) {
+// Loads snapshots for all chains from the specified source and branch.
+func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (err error) {
+	// Not going to call out that we're loading *all* chains but there's a fix coming for that.
+
+	// Can't currently log as erigon-lib module does not exist at its canonical import location. See
+	// https://github.com/erigontech/erigon/pull/16111.
+	//log.Info("Loading remote snapshot hashes")
 	var (
 		mainnetUrl    = getURLByChain(source, "mainnet", branch)
 		sepoliaUrl    = getURLByChain(source, "sepolia", branch)
@@ -69,6 +78,7 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (f
 		gnosisUrl     = getURLByChain(source, "gnosis", branch)
 		chiadoUrl     = getURLByChain(source, "chiado", branch)
 		holeskyUrl    = getURLByChain(source, "holesky", branch)
+		hoodiUrl      = getURLByChain(source, "hoodi", branch)
 		bscUrl        = getURLByChain(source, "bsc", branch)
 		chapelUrl     = getURLByChain(source, "chapel", branch)
 	)
@@ -76,60 +86,56 @@ func LoadSnapshots(ctx context.Context, source SnapshotSource, branch string) (f
 	// Try to fetch the latest snapshot hashes from the web
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, bscUrl); err != nil {
-		fetched = false
 		return
 	}
 	Bsc = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, chapelUrl); err != nil {
-		fetched = false
 		return
 	}
 	Chapel = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, mainnetUrl); err != nil {
-		fetched = false
 		return
 	}
 	Mainnet = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, sepoliaUrl); err != nil {
-		fetched = false
 		return
 	}
 	Sepolia = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, amoyUrl); err != nil {
-		fetched = false
 		return
 	}
 	Amoy = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, borMainnetUrl); err != nil {
-		fetched = false
 		return
 	}
 	BorMainnet = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, gnosisUrl); err != nil {
-		fetched = false
 		return
 	}
 	Gnosis = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, chiadoUrl); err != nil {
-		fetched = false
 		return
 	}
 	Chiado = hashes
 
 	if hashes, err = fetchSnapshotHashes(ctx, source, holeskyUrl); err != nil {
-		fetched = false
 		return
 	}
 	Holesky = hashes
-	fetched = true
-	return fetched, nil
+
+	if hashes, err = fetchSnapshotHashes(ctx, source, hoodiUrl); err != nil {
+		return
+	}
+	Hoodi = hashes
+
+	return nil
 }
 
 func fetchSnapshotHashes(ctx context.Context, source SnapshotSource, url string) ([]byte, error) {
