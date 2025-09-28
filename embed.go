@@ -55,7 +55,7 @@ func getURLByChain(source SnapshotSource, chain, branch string) string {
 		return fmt.Sprintf("https://raw.githubusercontent.com/erigontech/erigon-snapshot/%s/%s.toml", branch, chain)
 	} else if source == R2 {
 		if chain == "bsc" || chain == "chapel" {
-			return fmt.Sprintf("https://download.snapshots.bnbchain.world/%s/%s.toml", branch, chain)
+			return fmt.Sprintf("https://download.bsc-snapshot.workers.dev/%s/%s.toml", branch, chain)
 		}
 		return fmt.Sprintf("https://erigon-snapshots.erigon.network/%s/%s.toml", branch, chain)
 	}
